@@ -14,21 +14,21 @@ export default function GameContainer () {
 
   const fetchWord = () => {
     fetch('https://random-word-api.netlify.com/.netlify/functions/word?key=foobar')
-    .then(res => res.json())
-    .then((data) => {
-      const letters = data[0].split('')
-      const wordObject = letters.map((letter) => {
-        return {
-          letter,
-          match: false
-        }
+      .then(res => res.json())
+      .then((data) => {
+        const letters = data[0].split('')
+        const wordObject = letters.map((letter) => {
+          return {
+            letter,
+            match: false
+          }
+        })
+        setWord(wordObject)
+        setResetWord(wordObject)
+        setLoading(false)
+      }).catch(() => {
+        setFetchError(true)
       })
-      setWord(wordObject)
-      setResetWord(wordObject)
-      setLoading(false)
-    }).catch(() => {
-      setFetchError(true)
-    })
   }
 
   const startTimer = () => {
@@ -79,7 +79,7 @@ export default function GameContainer () {
 
   if (fetchError) {
     return (
-      <div className = "card">
+      <div className="card">
         <p>There was an error loading the word. Please refresh the page and
         try again.</p>
       </div>

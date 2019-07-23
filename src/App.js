@@ -2,15 +2,13 @@ import React from 'react';
 import './App.css';
 import GameContainer from './components/GameContainer'
 
-function App() {
+export default function App() {
   return (
     <div className="App">
       <header className="app-header">
-        Word Game
+        <h1>Word Game</h1>
       </header>
       <GameContainer />
     </div>
   );
 }
-
-export default App;
