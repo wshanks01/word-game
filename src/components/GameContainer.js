@@ -42,9 +42,10 @@ export default function GameContainer () {
   }
 
   const handleChange = (value) => {
-    setTypedWord(value)
+    const lowerCaseWord = value.toLowerCase()
+    setTypedWord(lowerCaseWord)
     let trueCount = 0
-    const newLetters = value.split('')
+    const newLetters = lowerCaseWord.split('')
     const updateWord = resetWord.map((l, i) => {
       if (l.letter === newLetters[i]) {
         trueCount++
