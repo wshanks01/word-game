@@ -7,7 +7,6 @@ export default function GameContainer () {
   const [time, setTime] = useState(60)
   const [started, setStarted] = useState(false)
   const [timer, setTimer] = useState()
-  const [showFinalScore, setShowFinalScore] = useState(false)
   const [resetWord, setResetWord] = useState()
   const [loading, setLoading] = useState(true)
   const [fetchError, setFetchError] = useState(false)
@@ -23,6 +22,7 @@ export default function GameContainer () {
             match: false
           }
         })
+
         setWord(wordObject)
         setResetWord(wordObject)
         setLoading(false)
@@ -34,7 +34,9 @@ export default function GameContainer () {
   const startTimer = () => {
     setStarted(true)
     setTime(60)
-    setShowFinalScore(false)
+
+    score !== 0 && setScore(0)
+
     const interval = setInterval(() => {
       setTime(time => time - 1)
     }, 1000)
@@ -42,10 +44,12 @@ export default function GameContainer () {
   }
 
   const handleChange = (value) => {
-    setTypedWord(value)
     const lowerCaseWord = value.toLowerCase()
     const newLetters = lowerCaseWord.split('')
     let trueCount = 0
+
+    setTypedWord(value)
+
     const updateWord = resetWord.map((l, i) => {
       if (l.letter === newLetters[i]) {
         trueCount++
@@ -71,9 +75,9 @@ export default function GameContainer () {
   useEffect(() => {
     if (time === 0) {
       setStarted(false)
-      setShowFinalScore(true)
       setTypedWord('')
       setWord(resetWord)
+
       clearInterval(timer)
     }
   }, [time, timer, resetWord])
@@ -94,14 +98,18 @@ export default function GameContainer () {
   } else {
     return (
       <div className="card">
-        { time !== 0
-          ? <p className="timer">{ time } seconds left</p>
-          : <p className="timer">Game Over</p>
-        }
-        { showFinalScore
-          ? <p className="score" >Your final score is: {score}</p>
-          : <p className="score">Score: { score }</p>
-        }
+        <p className="timer">
+          { time !== 0
+            ? `${time} seconds left`
+            : 'Game Over'
+          }
+        </p>
+        <p className="score">
+          { time === 0
+            ? `Your final score is: ${score}`
+            : `Score: ${score}`
+          }
+        </p>
         <div className="letters">
           { word.map((w, i) => {
             return <span className={`col ${w.match ? 'active' : ''}`} key={w.letter + i}>{ w.letter }</span>
